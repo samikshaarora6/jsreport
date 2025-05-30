@@ -15,8 +15,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build Docker image
         run: docker build -t localhost:5001/jsreport:latest -f packages/jsreport/docker/full/Dockerfile .
-      - name: Tag Docker image for local registry
-        run: docker tag jsreport:latest localhost:5001/jsreport:latest
       - name: Push Docker image to local registry
         run: docker push localhost:5001/jsreport:latest
       - uses: actions/checkout@v2   
