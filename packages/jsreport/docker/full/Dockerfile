@@ -18,19 +18,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends apt-transport-https apt-utils build-essential software-properties-common wget gnupg bzip2 git curl && \
-    apt update && apt install -y libgbm-dev libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libappindicator3-1 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libnss3 lsb-release xdg-utils && \
-    # adding custom ppa repository to get access to custom version of chromium for macOS Apple Silicon hardware
-    # this ppa has builds available for architectures amd64, arm64 (which we care because we produce arm64 builds)
-    # the default puppeteer download does not work for arm, because there is no arm version for chromium
-    # https://github.com/puppeteer/puppeteer/issues/7740
-    add-apt-repository ppa:xtradeb/apps && \
-    apt-get update && \
-    apt install -y chromium=136.0.7103.113-1xtradeb1.2404.1 && \
-    # fonts for chrome
+    apt update && \
+    apt install -y libgbm-dev libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libappindicator3-1 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libnss3 lsb-release xdg-utils && \
+    apt install -y chromium && \
     apt install -y fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst && \
-    # unoconv
     apt-get -y install unoconv && \
-    # libreoffice
     apt-get -y install default-jre libreoffice-java-common
 
 # cleanup
