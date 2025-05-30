@@ -1,6 +1,10 @@
 name: docker-full 
 
 on:
+  push:
+    branches: [ rbc-assessment ]
+  pull_request:
+    branches: [ rbc-assessment ]
   release:
     types: [published]
 
