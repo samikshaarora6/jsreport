@@ -109,5 +109,31 @@ SELECT "name", "shortid", "creationDate" FROM "jsreport_TemplateType" ORDER BY "
 - **Studio:** Enabled (because `"studio"` is in `extensionsList`)
 - **Authentication:** Disabled (`"enabled": false` in config)
 
+## 10. Starting the GitHub Actions Self-Hosted Runner
+
+If you are using a self-hosted GitHub Actions runner, you can start it with the following steps:
+
+1. Navigate to your GitHub Actions runner directory (replace the path as needed):
+   ```sh
+   cd /path/to/actions-runner
+   ```
+2. Start the runner:
+   ```sh
+   ./run.sh
+   ```
+
+**Sample script to automate starting the runner:**
+```bash
+#!/bin/bash
+
+# Navigate to the GitHub Actions runner directory
+cd /path/to/actions-runner || exit 1
+
+# Run the runner
+./run.sh
+```
+
+Replace `/path/to/actions-runner` with the actual path to your runner directory.
+
 ---
 For more details, see the official [jsreport documentation](https://jsreport.net/learn/api). 
