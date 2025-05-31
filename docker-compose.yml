@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: jsreport
+      POSTGRES_PASSWORD: jsreport
+      POSTGRES_DB: jsreport
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jsreport -d jsreport"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  jsreport:
+    image: localhost:5001/jsreport:latest
+    environment:
+      extensions_authentication_admin_username: admin
+      extensions_authentication_admin_password: admin
+      extensions_authentication_cookieSession_secret: yourSuperSecretValue
+      # Postgres store configuration
+      store_provider: postgres
+      extensions_postgresStore_host: postgres
+      extensions_postgresStore_port: 5432
+      extensions_postgresStore_database: jsreport
+      extensions_postgresStore_user: jsreport
+      extensions_postgresStore_password: jsreport
+      # Alternative formats
+      extensions_store_provider: postgres
+      store_postgres_host: postgres
+      store_postgres_port: 5432
+      store_postgres_database: jsreport
+      store_postgres_user: jsreport
+      store_postgres_password: jsreport
+    ports:
+      - "5488:5488"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

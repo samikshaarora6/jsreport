@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "JSReport API Collection",
+    "description": "Collection for creating templates and generating reports in JSReport",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "admin",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "admin",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5488",
+      "type": "string"
+    },
+    {
+      "key": "templateId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Create Simple HTML Template",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('templateId', response._id || response.shortid);",
+                  "    console.log('Template ID saved: ' + (response._id || response.shortid));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Invoice\",\n  \"engine\": \"handlebars\",\n  \"recipe\": \"html-pdf\",\n  \"content\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <style>\\n        body { font-family: Arial, sans-serif; margin: 40px; }\\n        .header { text-align: center; color: #333; }\\n        .invoice-details { margin: 20px 0; }\\n        table { width: 100%; border-collapse: collapse; margin: 20px 0; }\\n        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\\n        th { background-color: #f2f2f2; }\\n        .total { font-weight: bold; background-color: #f9f9f9; }\\n    </style>\\n</head>\\n<body>\\n    <div class='header'>\\n        <h1>INVOICE</h1>\\n        <p>Invoice #: {{invoiceNumber}}</p>\\n        <p>Date: {{date}}</p>\\n    </div>\\n    \\n    <div class='invoice-details'>\\n        <h3>Bill To:</h3>\\n        <p>{{customer.name}}</p>\\n        <p>{{customer.address}}</p>\\n        <p>{{customer.city}}, {{customer.state}} {{customer.zip}}</p>\\n    </div>\\n    \\n    <table>\\n        <thead>\\n            <tr>\\n                <th>Description</th>\\n                <th>Quantity</th>\\n                <th>Unit Price</th>\\n                <th>Total</th>\\n            </tr>\\n        </thead>\\n        <tbody>\\n            {{#each items}}\\n            <tr>\\n                <td>{{description}}</td>\\n                <td>{{quantity}}</td>\\n                <td>${{unitPrice}}</td>\\n                <td>${{total}}</td>\\n            </tr>\\n            {{/each}}\\n        </tbody>\\n        <tfoot>\\n            <tr class='total'>\\n                <td colspan='3'>Total Amount:</td>\\n                <td>${{totalAmount}}</td>\\n            </tr>\\n        </tfoot>\\n    </table>\\n</body>\\n</html>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/odata/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["odata", "templates"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Generation",
+      "item": [
+        {
+          "name": "Generate Report from Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": {\n    \"shortid\": \"{{templateId}}\"\n  },\n  \"data\": {\n    \"invoiceNumber\": \"INV-2025-001\",\n    \"date\": \"2025-05-30\",\n    \"customer\": {\n      \"name\": \"John Doe\",\n      \"address\": \"123 Main Street\",\n      \"city\": \"Windsor\",\n      \"state\": \"ON\",\n      \"zip\": \"N9A 1A1\"\n    },\n    \"items\": [\n      {\n        \"description\": \"Web Development Services\",\n        \"quantity\": 40,\n        \"unitPrice\": 75.00,\n        \"total\": 3000.00\n      },\n      {\n        \"description\": \"Database Setup\",\n        \"quantity\": 8,\n        \"unitPrice\": 100.00,\n        \"total\": 800.00\n      },\n      {\n        \"description\": \"Testing & QA\",\n        \"quantity\": 12,\n        \"unitPrice\": 60.00,\n        \"total\": 720.00\n      },\n      {\n        \"description\": \"UI/UX Design\",\n        \"quantity\": 15,\n        \"unitPrice\": 85.00,\n        \"total\": 1275.00\n      },\n      {\n        \"description\": \"Project Management\",\n        \"quantity\": 20,\n        \"unitPrice\": 90.00,\n        \"total\": 1800.00\n      }\n    ],\n    \"totalAmount\": 7595.00\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/odata/reports",
+              "host": ["{{baseUrl}}"],
+              "path": ["odata", "reports"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

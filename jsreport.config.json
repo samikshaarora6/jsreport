@@ -2,7 +2,12 @@
   "httpPort": 5488,
   "trustUserCode": true,
   "store": {
-    "provider": "fs"
+    "provider": "postgres",
+    "host": "postgres",
+    "port": 5432,
+    "database": "jsreport",
+    "user": "jsreport",
+    "password": "jsreport"
   },
   "blobStorage": {
     "provider": "fs"
@@ -68,6 +73,7 @@
     "tags",
     "text",
     "version-control",
-    "xlsx"
+    "xlsx",
+    "templates"
   ]
 }

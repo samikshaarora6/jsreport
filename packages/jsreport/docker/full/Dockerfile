@@ -60,7 +60,7 @@ RUN jsreport init
 # COPY ./packages/jsreport/server.js server.js
 # COPY ./packages/jsreport/index.js index.js
 # COPY ./packages/jsreport/package.json package.json
-# COPY ./packages/jsreport/docker/default/jsreport.config.json jsreport.config.json
+COPY ./packages/jsreport/docker/default/jsreport.config.json jsreport.config.json
 # RUN npm install
 # =====================================================
 
